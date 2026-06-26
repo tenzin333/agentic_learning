@@ -1,0 +1,101 @@
+# Ground truth labels for CI evaluation.
+# Each entry maps an email (by short id) to its correct category.
+# Add new labeled emails here as the test suite grows.
+
+- id: "order_01"
+  expected_category: "order"
+  email: |
+    Dear Andy,
+    Thank you for contacting us. We sincerely apologize for the delay in delivering your order.
+    We have checked your order status, and it is currently in transit. The estimated delivery date is [Date]. We understand the inconvenience this may have caused and appreciate your patience.
+    If you have any further questions or need additional assistance, please feel free to reply to this email.
+    Thank you for choosing us.
+    Best regards,
+    Customer Support Team
+
+- id: "billing_01"
+  expected_category: "billing"
+  email: |
+    Dear Sarah,
+    I am writing to dispute a charge of $49.99 on my account dated November 3rd. I did not authorize this transaction and have no record of making this purchase.
+    I have already checked with my bank and they confirmed the charge came from your platform. I would like a full refund and an explanation of why this charge appeared.
+    Please resolve this at your earliest convenience.
+    Regards,
+    Sarah Mitchell
+
+- id: "technical_01"
+  expected_category: "technical"
+  email: |
+    Hi Support Team,
+    I have been unable to log into the mobile app since yesterday evening. Every time I enter my credentials, the app crashes immediately after the loading screen.
+    I have tried uninstalling and reinstalling the app twice. I am on an iPhone 14 running iOS 17.2. The web version works fine, so this seems to be specific to the mobile app.
+    Please look into this urgently as I need access for work.
+    Thanks,
+    James Okafor
+
+- id: "account_01"
+  expected_category: "account"
+  email: |
+    Hello,
+    I recently changed my email address and updated it in my profile settings. However, I am still receiving all notifications on my old email address.
+    I have logged out and back in multiple times but the issue persists. My account username is john_doe_92. The old email was johndoe@oldmail.com and the new one is johndoe@newmail.com.
+    Can you please update this on your end?
+    Best,
+    John Doe
+
+- id: "billing_02"
+  expected_category: "billing"
+  email: |
+    Dear Billing Department,
+    I cancelled my subscription on October 28th and received a confirmation email for the same. However, I was still charged the monthly fee of $19.99 on November 1st.
+    I have attached the cancellation confirmation email for your reference. Please process the refund as soon as possible.
+    Thank you,
+    Priya Sharma
+
+- id: "technical_02"
+  expected_category: "technical"
+  email: |
+    Hi,
+    We are a business customer using your API for our order management system. Since this morning, all API calls to the /orders endpoint are returning a 503 error.
+    Our integration was working perfectly until around 9 AM IST. We have not made any changes on our end. This is causing significant downtime for our operations.
+    Please treat this as high priority.
+    Regards,
+    DevOps Team, Acme Corp
+
+- id: "order_02"
+  expected_category: "order"
+  email: |
+    Hello,
+    I placed an order (#ORD-883421) on November 1st for a pair of running shoes. The estimated delivery was November 5th but it is now November 8th and I have not received anything.
+    The tracking link on your website just shows 'label created' and has not updated in 6 days. I need this for an event on November 10th. Can you either expedite the delivery or tell me if I should reorder?
+    Thank you,
+    Marcus Lee
+
+- id: "account_02"
+  expected_category: "account"
+  email: |
+    Hi there,
+    I am trying to reset my password but the reset email is not arriving in my inbox. I have checked my spam folder as well and there is nothing there.
+    I have tried resetting three times in the last hour. My registered email is amelia.roberts@gmail.com. I urgently need access to my account to complete a pending transaction.
+    Please help.
+    Amelia Roberts
+
+- id: "general_01"
+  expected_category: "general"
+  email: |
+    Dear Customer Support,
+    I just wanted to take a moment to appreciate the exceptional service I received from your representative, Lisa, last week. She was incredibly patient and resolved my issue within minutes.
+    It is rare to experience such genuine helpfulness these days. Please pass on my compliments to her and her team.
+    Keep up the great work!
+    Warm regards,
+    David Thompson
+
+- id: "general_02"
+  expected_category: "general"
+  email: |
+    Hi,
+    I have been a customer for over three years now. I wanted to ask whether you have any loyalty rewards or discount programs for long-term customers.
+    Also, do you offer any referral bonuses if I bring in new customers? A friend of mine is interested in signing up.
+    Looking forward to your response.
+    Thanks,
+    Nina Patel
