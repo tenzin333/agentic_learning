@@ -1,4 +1,6 @@
-# Model Regression Detection System
+# LLM Regression CI
+
+> A CI/CD quality gate that catches LLM prompt/model regressions before they ship.
 
 A CI/CD-style quality gate for LLM-powered features. It evaluates a prompt (or model)
 against a **golden dataset**, measures quality with real classification metrics, and
