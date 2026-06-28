@@ -5,3 +5,6 @@ langchain-openai
 langchain_huggingface
 python-dotenv
 pyyaml
+scikit-learn
+requests
+pytest

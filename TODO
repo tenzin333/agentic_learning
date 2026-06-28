@@ -1,3 +1,0 @@
-1.  Build a simple LLM feature: A customer support email classifier that reads an email and returns a category (billing, technical, account, general) plus a one-sentence summary. Wrap it in a single Python function with the prompt as a configurable parameter.
-2.  Version your prompts: Store prompts as versioned YAML files in a /prompts directory. Each file has a version ID, timestamp, the system prompt, and any few-shot examples. This is the “code” you’re running CI against.
-3.  Create the interface contract: Define a simple PromptConfig dataclass that your eval pipeline consumes. Input: email text. Output: structured JSON with category and summary. Keep it typed with Pydantic.

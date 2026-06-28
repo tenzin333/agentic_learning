@@ -1,0 +1,57 @@
+# Prompt regression check.
+#
+# Runs the email-classifier evaluation against the committed baseline whenever a
+# pull request changes something that can affect output quality (a prompt, the
+# golden set, or the code). If quality regressed beyond tolerance, `cli.py check`
+# exits 1 -> this job fails -> the PR check goes red and a Slack alert fires.
+#
+# NOTE: this step calls the live LLM, so it costs API calls and is slightly
+# non-deterministic. We keep it cheap by only triggering on quality-affecting
+# paths (below) and keeping the golden set small. The fast, free, deterministic
+# unit tests live in a separate job/workflow (Phase 5).
+
+name: prompt-eval
+
+on:
+  pull_request:
+    paths:
+      - "prompts/**"
+      - "tests/ground_truth.yaml"
+      - "baselines/**"
+      - "**.py"
+  workflow_dispatch:
+    inputs:
+      prompt: 
+        description: "Prompt version to check"
+        default: "v2"
+
+permissions:
+  contents: read
+
+concurrency: 
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: check out the code
+        uses: actions/checkout@v4
+
+      - name: set up python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+
+      - name: install dependencies
+        run: pip install -r requirements.txt
+
+      - name: run regression check
+        env:
+          MODEL: ${{ vars.MODEL || 'Qwen/Qwen2.5-72B-Instruct' }}
+          HUGGING_FACE_API_KEY: ${{ secrets.HUGGING_FACE_API_KEY }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: python cli.py check --prompt ${{ github.event.inputs.prompt || 'v2' }}
+  

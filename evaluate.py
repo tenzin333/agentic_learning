@@ -6,13 +6,17 @@ import os
 import json
 from schema import PromptConfig
 import argparse
+from utils import parse_model_json
+from metrics import compute_metrics, format_report
 
+
+load_dotenv()
 
 
 def load_prompt(version: str) -> PromptConfig:
     path = f"prompts/{version}.yaml"
-    if not os.path.exist(path):
-        raise FileNotFound("file not found")
+    if not os.path.exists(path):
+        raise FileNotFoundError("file not found")
 
     with open(path) as f:
         return PromptConfig.model_validate(yaml.safe_load(f))
@@ -20,11 +24,19 @@ def load_prompt(version: str) -> PromptConfig:
 def build_system_prompts(prompt: PromptConfig):
     if not prompt.few_shot_examples:
         return prompt.system_prompt
-    
-    shots = "\n".join(
-        f"Email: {ex.input}  " for ex in prompt.few_shot_examples
-        )
 
+    shots = "\n\n".join(
+        f"Email: {ex.input}\nOutput: {ex.output}" for ex in prompt.few_shot_examples
+    )
+    return f"{prompt.system_prompt}\n\nExamples:\n{shots}"
+
+def load_ground_truth():
+    path = "tests/ground_truth.yaml"
+    if not os.path.exists(path):
+        raise FileNotFoundError(f"File not found {path}")
+    
+    with open(path) as f:
+        return yaml.safe_load(f)
 
 
 
@@ -33,9 +45,9 @@ def run_evaluation(version: str):
     """
         runs an evaluation for prompt against golden test set
     """
-    prompts = load_prompts(version)
+    prompts = load_prompt(version)
     ground_truths = load_ground_truth()
-    system_prompt = build_system_prompts() 
+    system_prompt = build_system_prompts(prompts) 
 
     llm = HuggingFaceEndpoint(
         repo_id= os.getenv("MODEL"),
@@ -44,9 +56,9 @@ def run_evaluation(version: str):
 
     agent = ChatHuggingFace(llm=llm)
 
-    correct = 0
-    failure = []
+    records = []
 
+    # PHASE 1 — collect: run the model on every email and record what it predicted.
     for item in ground_truths:
         result = agent.invoke([
             SystemMessage(content=system_prompt),
@@ -54,27 +66,28 @@ def run_evaluation(version: str):
         ])
 
         try:
-            parsed = json.loads(result.content)
-            predicted = parsed["category"]
+            cleaned_data = parse_model_json(result.content)
+            predicted = cleaned_data["category"]
         except (json.JSONDecodeError, KeyError):
             predicted = "parse_error"
 
-        expected = item["expected"]
-        is_correct = expected == predicted
-        if is_correct:
-            correct  += 1
-        else:
-            failure.append({"id": item["id"], "expected": expected, "got": predicted})
+        expected = item["expected_category"]
+        records.append({"id": item["id"], "expected": expected, "predicted": predicted})
+
         status = "PASS" if expected == predicted else "FAIL"
         print(f"  [{status}] {item['id']:15s}  expected={expected:10s}  got={predicted}")
 
-    total = len(ground_truth)
-    accuracy_percent = (correct / ground_truth) * 100
+    # PHASE 2 — compute: turn the collected records into metrics, print, and save.
+    eval_result = compute_metrics(records, version, os.getenv("MODEL"))
+    print(format_report(eval_result))
+    path = eval_result.save()
+    print(f"\nSaved: {path}")
 
-    print(f"Result: {correct}/{total} correct  ({accuracy:.0f}% accuracy)")
+    return eval_result
 
-if __name__=='main':
-    parser = argparse.Argument_Parser(description:"Evaluate a prompt version agaisnt golden test set")
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description="Evaluate a prompt version agaisnt golden test set")
     parser.add_argument("version", help="Prompt version to test, v1 or v2")
     args = parser.parse_args()
     run_evaluation(args.version)

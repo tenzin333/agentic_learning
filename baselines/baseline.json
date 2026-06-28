@@ -1,0 +1,154 @@
+{
+  "prompt_version": "v2",
+  "model": "Qwen/Qwen2.5-72B-Instruct",
+  "timestamp": "2026-06-28T07:21:03Z",
+  "total": 10,
+  "accuracy": 1.0,
+  "parse_failure_rate": 0.0,
+  "per_category": {
+    "billing": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 2
+    },
+    "technical": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 2
+    },
+    "account": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 2
+    },
+    "order": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 2
+    },
+    "general": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 2
+    },
+    "unknown": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 0
+    }
+  },
+  "confusion": {
+    "labels": [
+      "billing",
+      "technical",
+      "account",
+      "order",
+      "general"
+    ],
+    "matrix": [
+      [
+        2,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        2,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        2,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        2,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        2
+      ]
+    ]
+  },
+  "predictions": [
+    {
+      "id": "order_01",
+      "expected": "order",
+      "predicted": "order",
+      "correct": true
+    },
+    {
+      "id": "billing_01",
+      "expected": "billing",
+      "predicted": "billing",
+      "correct": true
+    },
+    {
+      "id": "technical_01",
+      "expected": "technical",
+      "predicted": "technical",
+      "correct": true
+    },
+    {
+      "id": "account_01",
+      "expected": "account",
+      "predicted": "account",
+      "correct": true
+    },
+    {
+      "id": "billing_02",
+      "expected": "billing",
+      "predicted": "billing",
+      "correct": true
+    },
+    {
+      "id": "technical_02",
+      "expected": "technical",
+      "predicted": "technical",
+      "correct": true
+    },
+    {
+      "id": "order_02",
+      "expected": "order",
+      "predicted": "order",
+      "correct": true
+    },
+    {
+      "id": "account_02",
+      "expected": "account",
+      "predicted": "account",
+      "correct": true
+    },
+    {
+      "id": "general_01",
+      "expected": "general",
+      "predicted": "general",
+      "correct": true
+    },
+    {
+      "id": "general_02",
+      "expected": "general",
+      "predicted": "general",
+      "correct": true
+    }
+  ]
+}
